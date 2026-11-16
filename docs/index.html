@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Reverse Engineer: turn any viral video edit into code (editast)</title>
+<meta name="description" content="Open-source, offline tool that reverse-engineers TikTok, Reels, Shorts and trailers into a timestamped Edit AST: every cut, transition, zoom, speed ramp and caption, synced to the music's BPM and beats. Re-render it with your own footage and music.">
+<meta name="keywords" content="video reverse engineer, reverse engineer video edit, viral edit analysis, beat sync detection, BPM detection, shot boundary detection, transition detection, speed ramp detection, TikTok edit, Instagram Reels, YouTube Shorts, velocity edit, CapCut template, edit template, Python, editast">
+<meta name="author" content="Pranav T">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://pranav-conova.github.io/video-reverse-engineer/">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Video Reverse Engineer">
+<meta property="og:title" content="Video Reverse Engineer: turn any viral video edit into code">
+<meta property="og:description" content="Every cut, transition, zoom, speed ramp and caption of a TikTok, Reel, Short or trailer, timestamped and synced to the beat. Then replay the edit on your own footage and music.">
+<meta property="og:url" content="https://pranav-conova.github.io/video-reverse-engineer/">
+<meta property="og:image" content="https://raw.githubusercontent.com/Pranav-Conova/video-reverse-engineer/main/docs/car-edit-demo.gif">
+<meta property="og:image:alt" content="Video Reverse Engineer analysing a vertical BMW car edit: the video plays beside its interactive timeline report and Edit AST">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Video Reverse Engineer: turn any viral video edit into code">
+<meta name="twitter:description" content="Reverse-engineer TikToks, Reels, Shorts and trailers into a timestamped Edit AST, synced to the beat. Offline, CPU only, MIT.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Pranav-Conova/video-reverse-engineer/main/docs/car-edit-demo.gif">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://pranav-conova.github.io/video-reverse-engineer/#software",
+      "name": "Video Reverse Engineer",
+      "alternateName": "editast",
+      "description": "Open-source, offline Python CLI and library that reverse-engineers any video edit (TikTok, Instagram Reels, YouTube Shorts, film trailers) into a timestamped Edit AST of cuts, transitions, camera motion, speed ramps, effects and captions, aligned to the music's BPM, beats and drop, and re-renders it as a template with new footage and music.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Video analysis",
+      "operatingSystem": "Windows, macOS, Linux",
+      "softwareRequirements": "Python 3.10+",
+      "softwareVersion": "0.1.0",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "url": "https://pranav-conova.github.io/video-reverse-engineer/",
+      "downloadUrl": "https://github.com/Pranav-Conova/video-reverse-engineer",
+      "image": "https://raw.githubusercontent.com/Pranav-Conova/video-reverse-engineer/main/docs/car-edit-demo.gif",
+      "author": { "@type": "Person", "name": "Pranav T" },
+      "featureList": [
+        "Shot boundary and transition detection (cut, flash, fade, dissolve, whip, zoom, spin, glitch)",
+        "Camera motion: zoom, pan, rotate, shake",
+        "Speed ramps, slow motion and freeze frames",
+        "Colour grade, flashes, blur, invert, RGB split, letterbox",
+        "Caption and on-screen text OCR with word timing",
+        "Music BPM, beats, downbeats, drops and sections",
+        "Edit pattern inference",
+        "Export as JSON, EditScript and an interactive HTML report",
+        "Re-render an edit with your own clips, snapped to your song's beats"
+      ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Video Reverse Engineer (editast)",
+      "codeRepository": "https://github.com/Pranav-Conova/video-reverse-engineer",
+      "programmingLanguage": "Python",
+      "runtimePlatform": "Python 3.10+",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": { "@type": "Person", "name": "Pranav T" },
+      "targetProduct": { "@id": "https://pranav-conova.github.io/video-reverse-engineer/#software" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I find out how a viral TikTok, Reel or Short was edited?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Install Video Reverse Engineer and run editast analyze with the video's URL. It writes a timestamped list of every cut, transition and effect, the song's BPM and beat grid, where the drop is, and the rules the edit follows, plus an interactive HTML timeline report." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can it detect beat-synced cuts and the BPM of the music?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. It measures tempo (BPM), beats, downbeats, onsets, drops and energy sections, and records for every shot whether it starts on a beat and how many beats it lasts." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I copy a video edit and use it with my own footage and music?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Analyze the edit, then run editast render on the resulting .edit.json with --clips pointing to your footage, --music pointing to your song, and --fit, which moves every cut and effect onto your song's beats and lines up the drops." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Video Reverse Engineer need a GPU, an internet connection or an API key?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. It runs fully offline on a normal CPU; internet is only needed to download a video from a URL. A 52-second trailer is analyzed in about 25 seconds on a laptop." }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is Video Reverse Engineer?",
+          "acceptedAnswer": { "@type": "Answer", "text": "On its held-out synthetic benchmark it scores 0.994 overall (cuts F1 0.995, beats F 0.988). On the real Sintel trailer, shot boundaries score precision 0.95 and recall 1.00 against hand labels." }
+        },
+        {
+          "@type": "Question",
+          "name": "How is it different from a scene-cut detector like PySceneDetect?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Scene-cut detectors find where shots change. Video Reverse Engineer also classifies transitions, measures camera motion and effects inside shots, aligns everything to the music's beats, infers the edit's patterns, and can re-render the edit as a template." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+:root{--bg:#fbfaf8;--fg:#1d1d1f;--muted:#5c5c66;--card:#fff;--line:#e6e3de;--accent:#6d3fd6;--code:#f2f0ec}
+@media (prefers-color-scheme:dark){:root{--bg:#141417;--fg:#ececf0;--muted:#a3a3ad;--card:#1d1d22;--line:#2d2d34;--accent:#a98bff;--code:#24242a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:48px 16px 64px}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.15;margin:0 0 12px}
+h2{font-size:24px;margin:48px 0 12px}
+h3{font-size:17px;margin:24px 0 4px}
+p,li{color:var(--fg)}
+.lede{font-size:19px;color:var(--muted);margin:0 0 24px}
+a{color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
+.btn{display:inline-block;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:var(--card);text-decoration:none;font-weight:600}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:14px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{width:32%;color:var(--muted);font-weight:600}
+figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+footer{margin-top:56px;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Video Reverse Engineer</h1>
+<p class="lede">Reverse-engineer any viral video edit into code you can read, diff and re-render.</p>
+<div class="btns">
+<a class="btn primary" href="https://github.com/Pranav-Conova/video-reverse-engineer">View on GitHub</a>
+<a class="btn" href="https://github.com/Pranav-Conova/video-reverse-engineer#-quick-start">Quick start</a>
+<a class="btn" href="https://github.com/Pranav-Conova/video-reverse-engineer/tree/main/examples/youtube-car-edits">Examples</a>
+</div>
+</header>
+
+<figure>
+<img src="car-edit-demo.gif" width="880" height="550" alt="Video Reverse Engineer on a vertical BMW car edit: the video plays on the left and the HTML report on the right follows a playhead through one cut per beat, zoom and whip transitions and RGB-split hits, with the Edit AST scrolling underneath" loading="eager">
+<figcaption>A BMW edit by urboyliam, reverse-engineered: 116 BPM, and after the drop at 4.3 s it cuts on every beat (18 of 19 shots).</figcaption>
+</figure>
+
+<section>
+<h2>What is Video Reverse Engineer?</h2>
+<p><strong>Video Reverse Engineer</strong> (package and command: <code>editast</code>) is an open-source, offline Python tool that turns a finished video edit into a structured, timestamped description of how it was made. Give it a TikTok, Instagram Reel, YouTube Short or film trailer and it detects every cut, transition, zoom, pan, whip, speed ramp, flash, colour effect and caption, measures the music's BPM, beats and drop, and writes it all as an <strong>Edit AST</strong> in JSON, a readable text language called EditScript, and an interactive HTML report. The same AST works as a template: render the edit again with your own clips, timed to your own song.</p>
+<table>
+<tr><th>Type</th><td>Command-line tool and Python library</td></tr>
+<tr><th>Input</th><td>A video file, or a URL from YouTube, TikTok, Instagram and any other site yt-dlp supports</td></tr>
+<tr><th>Output</th><td>Edit AST (JSON + JSON Schema), EditScript text, HTML timeline report, re-rendered MP4</td></tr>
+<tr><th>Runs on</th><td>CPU only, fully offline. No GPU, cloud API or API key</td></tr>
+<tr><th>Requirements</th><td>Python 3.10+ on Windows, macOS or Linux</td></tr>
+<tr><th>License</th><td>MIT, free and open source</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Quick start</h2>
+<pre><code>git clone https://github.com/Pranav-Conova/video-reverse-engineer.git
+cd video-reverse-engineer
+pip install -e ".[ocr,fetch]"
+
+editast analyze "https://www.youtube.com/shorts/N-va3tJzyT0"</code></pre>
+<p>Re-create an edit with your own footage and music:</p>
+<pre><code>editast render out/viral/viral.edit.json --clips my_footage/ --music my_song.mp3 --fit -o mine.mp4</code></pre>
+</section>
+
+<section>
+<h2>What it detects</h2>
+<ul>
+<li><strong>Transitions:</strong> cut, flash, fade, dissolve, whip, zoom, spin, glitch</li>
+<li><strong>Camera motion:</strong> zoom, pan, rotate, shake, with fitted easing curves</li>
+<li><strong>Time effects:</strong> speed ramps, slow motion, freeze frames</li>
+<li><strong>Look:</strong> colour grade, black and white, flashes, blur, invert, RGB split, letterbox</li>
+<li><strong>Text:</strong> burned-in captions and on-screen text with offline OCR and word timing</li>
+<li><strong>Music:</strong> BPM, beat grid, downbeats, onsets, drops, energy and sections</li>
+<li><strong>Patterns:</strong> inferred rules such as “cuts every beat in the drop” or “zoom on the drop”</li>
+</ul>
+</section>
+
+<section>
+<h2>What 10 viral car edits have in common</h2>
+<p>Run on the 10 most-viewed car edits from a set of YouTube Shorts searches (1.1M to 9.4M views), the tool found that the drop comes 35–61% of the way in, median pace jumps from about 9 to 61 cuts per minute after it, and 73–97% of cuts land on a beat where the beat grid is reliable. <a href="https://github.com/Pranav-Conova/video-reverse-engineer/tree/main/examples/youtube-car-edits">See the per-video data.</a></p>
+</section>
+
+<section>
+<h2>Accuracy</h2>
+<p>On its held-out synthetic benchmark the tool scores <strong>0.994 overall</strong> (cuts F1 0.995, beats F 0.988, text F1 1.000). On the real Sintel trailer, shot boundaries score precision 0.95 and recall 1.00 against hand labels. A 52-second trailer is analyzed in about 25 seconds on a laptop CPU.</p>
+</section>
+
+<section>
+<h2>Frequently asked questions</h2>
+<h3>How do I find out how a viral TikTok, Reel or Short was edited?</h3>
+<p>Run <code>editast analyze</code> with the video's URL. You get a timestamped list of every cut, transition and effect, the song's BPM and beat grid, where the drop is, and the rules the edit follows, plus an interactive HTML timeline.</p>
+<h3>Can it detect beat-synced cuts and the BPM of the music?</h3>
+<p>Yes. It measures tempo, beats, downbeats, onsets, drops and sections, and records for every shot whether it starts on a beat and how many beats it lasts.</p>
+<h3>How do I copy a video edit and use it with my own footage and music?</h3>
+<p>Analyze the edit, then run <code>editast render</code> with <code>--clips</code>, <code>--music</code> and <code>--fit</code>. Every cut and effect moves onto your song's beats and the drops line up.</p>
+<h3>Does it need a GPU, an internet connection or an API key?</h3>
+<p>No. It runs offline on a normal CPU; internet is only needed to download a video from a URL.</p>
+<h3>How is it different from a scene-cut detector like PySceneDetect?</h3>
+<p>Scene-cut detectors find where shots change. Video Reverse Engineer also classifies transitions, measures camera motion and effects inside shots, aligns everything to the beat, infers the edit's patterns, and can re-render the edit as a template.</p>
+</section>
+
+<footer>
+<p>Video Reverse Engineer is MIT licensed © 2026 Pranav T. Source, issues and contributions on <a href="https://github.com/Pranav-Conova/video-reverse-engineer">GitHub</a>. Machine-readable summary: <a href="llms.txt">llms.txt</a>.</p>
+</footer>
+</main>
+</body>
+</html>
