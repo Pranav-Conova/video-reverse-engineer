@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use Video Reverse Engineer, please cite it using these metadata."
+type: software
+title: "Video Reverse Engineer (editast)"
+abstract: >-
+  Video Reverse Engineer is an open-source, offline Python tool and CLI that
+  reverse-engineers a finished video edit (TikTok, Instagram Reels, YouTube
+  Shorts, film trailers) into a structured, timestamped Edit AST: every cut,
+  transition, camera move, speed ramp, flash, colour effect and caption,
+  aligned to the music's BPM, beats and drops. The AST can be exported as
+  JSON, a readable text language (EditScript) and an interactive HTML report,
+  and re-rendered as a template with new footage and music.
+authors:
+  - given-names: Pranav
+    family-names: T
+repository-code: "https://github.com/Pranav-Conova/video-reverse-engineer"
+url: "https://github.com/Pranav-Conova/video-reverse-engineer"
+license: MIT
+version: 0.1.0
+keywords:
+  - video analysis
+  - video editing
+  - reverse engineering
+  - shot boundary detection
+  - transition detection
+  - beat tracking
+  - music-video synchronization
+  - abstract syntax tree
+  - short-form video

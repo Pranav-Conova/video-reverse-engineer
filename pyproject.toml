@@ -10,13 +10,34 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
 authors = [{ name = "Pranav T" }]
-keywords = ["reverse-engineering", "video-editing", "video-analysis", "computer-vision", "beat-detection", "ast", "tiktok", "youtube-shorts", "instagram-reels"]
+keywords = [
+    "reverse-engineering", "video-editing", "video-analysis", "computer-vision",
+    "beat-detection", "bpm-detection", "beat-sync", "music-video-sync",
+    "shot-boundary-detection", "scene-detection", "transition-detection",
+    "speed-ramp", "camera-motion", "ocr", "captions", "edit-template",
+    "video-template", "auto-editing", "ast", "abstract-syntax-tree",
+    "tiktok", "youtube-shorts", "instagram-reels", "short-form-video",
+    "velocity-edit", "capcut", "ffmpeg", "opencv",
+]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Multimedia :: Video",
+    "Topic :: Multimedia :: Video :: Conversion",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
     "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
     "numpy>=1.26",
@@ -30,7 +51,9 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/Pranav-Conova/video-reverse-engineer"
 Repository = "https://github.com/Pranav-Conova/video-reverse-engineer"
+Documentation = "https://github.com/Pranav-Conova/video-reverse-engineer#readme"
 Issues = "https://github.com/Pranav-Conova/video-reverse-engineer/issues"
+Examples = "https://github.com/Pranav-Conova/video-reverse-engineer/tree/main/examples"
 
 [project.optional-dependencies]
 ocr = ["rapidocr-onnxruntime>=1.3"]

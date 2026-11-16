@@ -1,0 +1,31 @@
+# Video Reverse Engineer (editast)
+
+> Open-source, offline Python CLI and library that reverse-engineers any video edit (TikTok, Instagram Reels, YouTube Shorts, film trailers) into a structured, timestamped Edit AST: every cut, transition, zoom, pan, whip, speed ramp, flash, colour effect and caption, aligned to the music's BPM, beats and drop. The AST can be re-rendered as a template with your own footage and music. MIT licensed, Python 3.10+, CPU only, no API keys.
+
+Key facts:
+
+- Install: `git clone https://github.com/Pranav-Conova/video-reverse-engineer.git && cd video-reverse-engineer && pip install -e ".[ocr,fetch]"`
+- Main command: `editast analyze <video file or URL>` writes `*.edit.json` (Edit AST + JSON Schema), `*.edit` (EditScript text) and `*.report.html` (interactive timeline).
+- Other commands: `show`, `batch` (patterns across many videos), `compare`, `fit` (rank edit templates for a song), `render` (re-create an edit with your clips and music; `--fit` snaps to your song's beats), `bench`, `schema`, `fetch`.
+- Python API: `from editast.pipeline import analyze; edit = analyze("video.mp4").edit`
+- Detects transitions (cut, flash, fade, dissolve, whip, zoom, spin, glitch), in-shot effects (zoom, pan, rotate, shake, speed ramp, freeze, flash, blur, invert, RGB split), captions via offline OCR (RapidOCR), and music BPM, beats, downbeats, drops and sections.
+- Infers edit patterns such as "cuts every beat in the drop" or "zoom on the drop".
+- Accuracy: 0.994 overall on a held-out synthetic benchmark (cuts F1 0.995, beats F 0.988); shot boundaries precision 0.95 / recall 1.00 on the real Sintel trailer.
+- Speed: a 52 s trailer is analyzed in about 25 s on a laptop CPU.
+
+## Docs
+
+- [README](https://github.com/Pranav-Conova/video-reverse-engineer/blob/main/README.md): overview, quick start, usage, FAQ, accuracy and known limits
+- [PLAN.md](https://github.com/Pranav-Conova/video-reverse-engineer/blob/main/PLAN.md): architecture and module contracts
+- [Edit AST definition](https://github.com/Pranav-Conova/video-reverse-engineer/blob/main/editast/ast/nodes.py): Pydantic models for the AST
+- [CLI](https://github.com/Pranav-Conova/video-reverse-engineer/blob/main/editast/cli.py): all commands and flags
+
+## Examples
+
+- [10 viral YouTube car edits](https://github.com/Pranav-Conova/video-reverse-engineer/tree/main/examples/youtube-car-edits): Edit ASTs and the patterns they share
+- [BMW car edit demo](https://github.com/Pranav-Conova/video-reverse-engineer/blob/main/examples/demo-car-edit/youtube_N-va3tJzyT0.edit): a full EditScript
+
+## Optional
+
+- [Demo renderer](https://github.com/Pranav-Conova/video-reverse-engineer/tree/main/demo): Remotion project that renders the README GIFs
+- [License (MIT)](https://github.com/Pranav-Conova/video-reverse-engineer/blob/main/LICENSE)

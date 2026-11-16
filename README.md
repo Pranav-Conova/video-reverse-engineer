@@ -15,7 +15,7 @@ Then replay that edit on **your own footage and music**.
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4)](#-contributing)
 [![GitHub stars](https://img.shields.io/github/stars/Pranav-Conova/video-reverse-engineer?style=social)](https://github.com/Pranav-Conova/video-reverse-engineer/stargazers)
 
-[**Quick start**](#-quick-start) · [**What it finds**](#-what-it-extracts) · [**Real results**](#-what-10-viral-car-edits-have-in-common) · [**How it works**](#%EF%B8%8F-how-it-works) · [**Accuracy**](#-accuracy) · [**Roadmap**](#%EF%B8%8F-roadmap)
+[**Quick start**](#-quick-start) · [**What it finds**](#-what-it-extracts) · [**Real results**](#-what-10-viral-car-edits-have-in-common) · [**How it works**](#%EF%B8%8F-how-it-works) · [**Accuracy**](#-accuracy) · [**FAQ**](#-faq) · [**Roadmap**](#%EF%B8%8F-roadmap)
 
 <br>
 
@@ -26,6 +26,21 @@ Then replay that edit on **your own footage and music**.
 </div>
 
 ---
+
+## 📖 What is Video Reverse Engineer?
+
+**Video Reverse Engineer** (Python package and CLI: `editast`) is an open-source, offline tool that reverse-engineers a finished video edit into a structured, timestamped description of how it was made. Give it a TikTok, Instagram Reel, YouTube Short or film trailer, and it detects every cut, transition, zoom, pan, whip, speed ramp, flash, colour effect and on-screen caption, measures the music's BPM, beats and drop, and writes it all as an **Edit AST** (abstract syntax tree) in JSON, a readable text language called **EditScript**, and an interactive HTML report. The same AST can then be used as a template: `editast render` re-creates the edit with your own clips, timed to the beats of your own song.
+
+| | |
+|---|---|
+| **Type** | Command-line tool and Python library |
+| **Package / command** | `editast` |
+| **Input** | A video file, or a URL from any site [yt-dlp](https://github.com/yt-dlp/yt-dlp) supports (YouTube, TikTok, Instagram …) |
+| **Output** | Edit AST (`.edit.json` + JSON Schema), EditScript (`.edit`), HTML timeline report, re-rendered MP4 |
+| **Detects** | Shot boundaries, transitions, camera motion, speed ramps, freeze frames, colour grade and flashes, captions (OCR), BPM, beat grid, downbeats, drops, sections, edit patterns |
+| **Runs on** | CPU only, fully offline. No GPU, cloud API or API key |
+| **Language** | Python 3.10+ |
+| **License** | MIT |
 
 ## 🤔 Why?
 
@@ -272,6 +287,48 @@ editast bench --n 5                               # check your change against th
 ```
 
 If you change an analyzer, please include the `editast bench` scores before and after in your pull request.
+
+## ❓ FAQ
+
+### How do I find out how a viral TikTok, Reel or Short was edited?
+
+Run `editast analyze "<video URL>"`. Video Reverse Engineer downloads the video and writes a timestamped list of every cut, transition and effect, the song's BPM and beat grid, where the drop is, and the rules the edit follows (for example "cuts every beat after the drop"). Open the `.report.html` file to see it on an interactive timeline.
+
+### Can it detect beat-synced cuts and the BPM of the music?
+
+Yes. The audio analyzer measures tempo (BPM), beats, downbeats, onsets, drops and energy sections, and every shot records whether it starts on a beat and how many beats long it is. On 10 viral YouTube car edits, 73–97% of cuts landed on a beat where the beat grid was reliable.
+
+### How do I copy a video edit and use it with my own footage and music?
+
+Analyze the edit, then render it with your clips: `editast render viral.edit.json --clips my_footage/ --music my_song.mp3 --fit -o mine.mp4`. `--fit` moves every cut and effect onto your song's beats and lines up the drops. To choose which edit suits a song, run `editast fit my_song.mp3 <folder of edits>`.
+
+### What effects and transitions can it recognise?
+
+Transitions: cut, flash, fade, dissolve, whip, zoom, spin and glitch. In-shot effects: zoom, pan, rotate, shake, speed ramp, freeze frame, flash, blur, invert and RGB split. It also reads burned-in captions and on-screen text with OCR, and detects black-and-white, colour grade and letterboxing.
+
+### Does it need a GPU, an internet connection or an API key?
+
+No. Analysis runs on a normal laptop CPU, fully offline (internet is only needed to download a video from a URL). A 52-second trailer is analyzed in about 25 seconds.
+
+### How accurate is it?
+
+On its synthetic benchmark (held-out seeds) it scores **0.994 overall**, with cuts F1 0.995 and beats F 0.988. On the real Sintel trailer, shot boundaries score precision 0.95 and recall 1.00 against hand labels. Known limits are listed under [Accuracy](#-accuracy).
+
+### How is it different from a scene-cut detector like PySceneDetect?
+
+Scene-cut detectors find where shots change. Video Reverse Engineer also classifies the transition, measures camera motion and effects inside each shot, aligns everything to the music's beats, infers the patterns of the edit, and can render the edit again as a template with new footage and music.
+
+### What is an Edit AST?
+
+An Edit AST is a tree describing an edit: media info, music (BPM, beats, drops), a timeline of sections, shots, effects and transitions, text overlays, inferred patterns and stats. It is defined in [`editast/ast/nodes.py`](editast/ast/nodes.py), exported as JSON with a JSON Schema (`editast schema`), and printed as EditScript, a text form that round-trips losslessly.
+
+### Can I use it from Python?
+
+Yes: `from editast.pipeline import analyze`, then `analyze("video.mp4").edit` gives you the Edit AST as Pydantic models. See [Use it from Python](#-use-it-from-python).
+
+## 📚 Cite this project
+
+If you use Video Reverse Engineer in research, please cite it with the metadata in [`CITATION.cff`](CITATION.cff) (GitHub shows a "Cite this repository" button for it).
 
 ## ⚖️ A note on content
 
